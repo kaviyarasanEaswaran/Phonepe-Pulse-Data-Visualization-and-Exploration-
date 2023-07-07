@@ -4,12 +4,12 @@ import streamlit as st
 import plotly.express as px
 
 
-#Sql clien Connection
+#Sql client Connection
 conn=psycopg2.connect(host="localhost",
                       user="postgres",
-                      password="Kavidhina@5566",
+                      password="xxxx", #enter your passowrd
                       port=5432,
-                      database="phonepe_pulse")
+                      database="XXXX") #enter your database name
 cursor=conn.cursor()
 
 styled_text = "<p style='font-size: 40px; font-weight: bold;color:magenta;'>Phonepe Pulse Data Visualization and Exploration:</p>"
