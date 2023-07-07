@@ -4,6 +4,7 @@ import streamlit as st
 import plotly.express as px
 
 
+#Sql clien Connection
 conn=psycopg2.connect(host="localhost",
                       user="postgres",
                       password="Kavidhina@5566",
@@ -21,7 +22,7 @@ with st.sidebar:
     select_page=st.selectbox('select the page',page)
     
 
-
+#
 def format_amount_inr(amount):
     crore_amount = amount / 10000000  # Divide by 10,000,000 to convert to Crore
     rounded_crore_amount = round(crore_amount)  # Round off the Crore amount
@@ -432,11 +433,11 @@ if select_page == 'Data Exploration':
                         
                         #1 All PhonePe users
                         st.subheader('Registered_Users :')
-                        query1=f"select sum(registered_user) from aggre_user_year_wise where quarter= '{selected_quarter[0:2]}' and year='{selected_year}'"
+                        query1=f"select sum(count) from aggre_user_year_wise where quarter= '{selected_quarter[0:2]}' and year='{selected_year}'"
                         cursor.execute(query1)
                         result1=int(cursor.fetchone()[0])
                         formatted_amount1 = '{:,}'.format(result1)
-                        styled_text = "<p style='font-size: 20px; font-weight: bold;'>All PhonePe users </p>"
+                        styled_text = "<p style='font-size: 20px; font-weight: bold;'>Total PhonePe users </p>"
                         styled_text += f"<p style='font-size: 40px;font-weight: bold;color: purple;'>{formatted_amount1}</p>"
                         st.markdown(styled_text, unsafe_allow_html=True)
                                            
@@ -591,15 +592,17 @@ if select_page == 'Data Exploration':
                         
                        
                     with col8:
+                       
                        #1 All PhonePe users
                        st.subheader('Registered_Users :')
-                       query1=f"select sum(registered_user) from aggre_user_year_wise where quarter= '{selected_quarter[0:2]}' and year='{selected_year}'"
+                       query1=f"select sum(count) from aggre_user_year_wise where quarter= '{selected_quarter[0:2]}' and year='{selected_year}'"
                        cursor.execute(query1)
                        result1=int(cursor.fetchone()[0])
-                       frmatted_amount1 = '{:,}'.format(result1)
+                       formatted_amount1 = '{:,}'.format(result1)
                        styled_text = "<p style='font-size: 20px; font-weight: bold;'>Total PhonePe users </p>"
                        styled_text += f"<p style='font-size: 40px;font-weight: bold;color: purple;'>{formatted_amount1}</p>"
                        st.markdown(styled_text, unsafe_allow_html=True)
+                                          
                        #2 All PhonePe App_open
                        query1=f"select sum(app_open) from aggre_user_year_wise where quarter= '{selected_quarter[0:2]}' and year='{selected_year}'"
                        cursor.execute(query1)
@@ -610,6 +613,8 @@ if select_page == 'Data Exploration':
                        styled_text = "<p style='font-size: 20px; font-weight: bold;'>All PhonePe App_open </p>"
                        styled_text += f"<p style='font-size: 40px;font-weight: bold;color: purple;'>{formatted_amount1}</p>"
                        st.markdown(styled_text, unsafe_allow_html=True) 
+                       
+                       
                        cursor.execute( f"select brand,sum(registered_user) as reg_user  from aggre_user_state_wise where quarter='{selected_quarter[0:2]}' and year='{selected_year}' group by brand order by reg_user desc")
                        df =pd.DataFrame(cursor.fetchall(),columns=['brand','reg_user'])
                        for val in range(len(df['brand'])):
